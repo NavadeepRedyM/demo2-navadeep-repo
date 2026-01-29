@@ -1,0 +1,45 @@
+services:
+  flight-db:
+    image: mysql:8.0
+    container_name: flight-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_DATABASE: flightdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - flight-data:/var/lib/mysql
+    networks:
+      - flight-network
+    # Essential for modern builds to ensure DB is ready before app starts
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+
+  flight-ws:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flight-ws
+    ports:
+      - "8080:8080"
+    depends_on:
+      flight-db:
+        condition: service_healthy
+    environment:
+      # Use the service name 'flight-db' as the hostname
+      SPRING_DATASOURCE_URL: jdbc:mysql://flight-db:3306/flightdb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootroot
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - flight-network
+
+volumes:
+  flight-data: 
+
+networks:
+  flight-network:
+    driver: bridge

@@ -1,0 +1,135 @@
+<!DOCTYPE html> <!-- Declares the document as HTML5 -->
+<html xmlns:th="http://www.thymeleaf.org"> <!-- Enables Thymeleaf dynamic templating features -->
+<head>
+    <meta charset="UTF-8"> <!-- Sets the character encoding for the document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensures proper responsive scaling on mobile -->
+    <title>Update Airline | Emerald Edition 2026</title> <!-- Sets the browser tab title -->
+    
+    <!-- Links to Bootstrap 5.3 CDN for layout and responsive design -->
+    <link href="https://cdn.jsdelivr.net" rel="stylesheet">
+    
+    <style>
+        body {
+            /* Sets a modern font stack including Apple and system defaults */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+            /* Applies a teal-themed diagonal gradient background */
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); 
+            min-height: 100vh; /* Full viewport height coverage */
+            margin: 0; /* Resets default browser margins */
+            display: flex; /* Enables Flexbox for centering content */
+            justify-content: center; /* Centers the card horizontally */
+            align-items: center; /* Centers the card vertically */
+            -webkit-font-smoothing: antialiased; /* Renders smoother fonts on Webkit browsers */
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.98); /* White card with very slight transparency */
+            padding: 50px 70px; /* Internal card spacing */
+            border-radius: 18px; /* Rounded corners for the form container */
+            box-shadow: 0 15px 45px rgba(0,0,0,0.3); /* Deep shadow for depth */
+            width: 95%; /* Responsive width for smaller screens */
+            max-width: 800px; /* Limits the width for better readability on desktops */
+        }
+
+        .flex-row-custom {
+            display: flex; /* Horizontal flex layout for input fields */
+            gap: 30px; /* Space between the ID and Name fields */
+            width: 100%; /* Spans the full width of the card */
+            margin-bottom: 25px; /* Spacing below the input row */
+        }
+
+        .flex-item {
+            flex: 1; /* Ensures both input containers take equal width */
+        }
+
+        h2 { 
+            font-weight: 700; /* Bold heading weight */
+            color: #16a085; /* Teal brand color */
+            margin-bottom: 40px; /* Space above form fields */
+            letter-spacing: -0.5px; /* Slight typographic tightening */
+        }
+
+        label { 
+            font-weight: 600; /* Semi-bold label text */
+            font-size: 0.85rem; /* Smaller, cleaner font size */
+            color: #555; /* Medium grey for text labels */
+            margin-bottom: 8px; /* Space between label and input box */
+            display: block; /* Places label on its own line */
+        }
+
+        .form-control {
+            border-radius: 8px; /* Rounded edges for input boxes */
+            border: 1px solid #ced4da; /* Subtle border color */
+            padding: 12px 16px; /* Comfortable padding for typing */
+            transition: all 0.2s ease; /* Smooth transition for focus effects */
+        }
+
+        /* Styling for when the user clicks into an input field */
+        .form-control:focus {
+            border-color: #16a085; /* Teal border on focus */
+            box-shadow: 0 0 0 4px rgba(26, 188, 156, 0.2); /* Soft teal outer glow */
+            outline: none; /* Removes default browser focus outline */
+        }
+
+        .btn-submit {
+            background-color: #16a085; /* Solid teal background */
+            color: white; /* White text for contrast */
+            border: none; /* Removes default button borders */
+            padding: 14px 60px; /* Large clickable area */
+            border-radius: 8px; /* Matches input rounding */
+            font-weight: 700; /* Bold text weight */
+            float: right; /* Aligns button to the right side */
+            margin-top: 20px; /* Space above the button */
+            box-shadow: 0 5px 15px rgba(22, 160, 133, 0.3); /* Subtle button shadow */
+            transition: 0.3s; /* Smooth hover transition */
+        }
+
+        /* Hover effect for the submit button */
+        .btn-submit:hover {
+             background-color: #1abc9c; /* Lighter teal on hover */
+             transform: translateY(-2px); /* Subtle lifting animation */
+        }
+
+        /* Specific styling for the read-only ID field */
+        .readonly-field {
+            background-color: #f8f9fa; /* Light grey background indicating disabled state */
+            cursor: not-allowed; /* Shows a "not allowed" cursor when hovering */
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h2> Update Airline Details</h2>
+    
+    <!-- Form targeting the Airline controller to update the "air" object -->
+    <form th:action="@{/api/addAir}" th:object="${air}" method="POST">
+        
+        <div class="flex-row-custom">
+            <!-- ID Field: Locked so the Primary Key isn't changed manually -->
+            <div class="flex-item">
+                <label>Airline ID</label>
+                
+                <input type="text" th:field="*{Aid}" class="form-control readonly-field" readonly>
+            </div>
+
+            <!-- Editable Name Field -->
+            <div class="flex-item">
+                <label>Airline (Enterprise) Name</label>
+                <!-- th:field links this to the AirName variable for editing -->
+                <input type="text" th:field="*{AirName}" class="form-control" placeholder="Enter new airline name" required>
+            </div>
+        </div>
+
+        <!-- Action Buttons Footer -->
+        <div style="overflow: auto; margin-top: 30px;">
+            <!-- Button to submit the update request -->
+            <button type="submit" class="btn btn-submit shadow-sm">Update Airline</button>
+            <!-- Link to cancel and return to the airline dashboard -->
+            <a th:href="@{/api/showAirline}" class="btn btn-light me-2" style="float:right; margin-top:20px; padding: 14px 30px; border-radius: 8px;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

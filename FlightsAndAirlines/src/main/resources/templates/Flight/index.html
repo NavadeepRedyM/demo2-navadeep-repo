@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Dashboard | Emerald Edition 2026</title>
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net" rel="stylesheet">
+    <!-- Google Font (Inter) -->
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+            /* Orange Background Gradient */
+            background: linear-gradient(135deg, #ffa733 0%, #ff7b00 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 1450px; /* Wider for full property display */
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            font-weight: 700;
+            color: #ff8c00;   /* was #16a085 */
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-add {
+            background-color: #ff8c00;  /* was #16a085 */
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255,140,0,0.25);
+        }
+
+        .btn-add:hover {
+            background-color: #ffa733;  /* was #1abc9c */
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* --- TABLE STYLING --- */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .table thead th {
+            background: transparent;
+            border: none;
+            color: #86868b;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding: 15px;
+        }
+
+        .table tbody tr {
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .table tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .table tbody td {
+            padding: 15px;
+            vertical-align: middle;
+            border: none;
+            color: #1d1d1f;
+            font-size: 0.95rem;
+        }
+
+        .badge-class {
+            background-color: #fff4e6;   /* was #e8f5e9 */
+            color: #ff8c00;              /* was #16a085 */
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .price-text {
+            color: #ff8c00; /* was #16a085 */
+            font-weight: 700;
+        }
+
+        .time-text {
+            font-weight: 600;
+            color: #555;
+        }
+
+        /* --- FILTER SECTION STYLING --- */
+        .filter-container {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+        }
+
+        /* The Grid Logic */
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            gap: 20px;
+        }
+
+        .filter-row-full {
+            grid-column: span 2; /* Forces buttons to span full width or center */
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-control {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+
+        .filter-control:focus {
+            outline: none;
+            border-color: #ff8c00;                /* was #16a085 */
+            box-shadow: 0 0 0 3px rgba(255,140,0,0.15); /* was green glow */
+        }
+
+        .btn-filter-submit {
+            background-color: #ff8c00;   /* was #16a085 */
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 12px rgba(255,140,0,0.22);
+        }
+
+        .btn-filter-submit:hover {
+            background-color: #ffa733;   /* was #1abc9c */
+            transform: translateY(-2px);
+        }
+
+        .btn-filter-reset {
+            background-color: #e2e8f0;
+            color: #475569;
+            text-decoration: none;
+            padding: 10px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-card">
+
+    <h1 th:text="'Hello ' + ${loggedUserName ?: 'Guest'} + '!'"></h1>
+
+    <!-- FILTER SECTION -->
+    <div class="filter-container">
+        <form th:action="@{/api/list}" method="GET" class="filter-grid">
+            <!-- ROW 1: Source and Destination -->
+            <div class="filter-group">
+                <label>From (Source)</label>
+                <input type="text" name="source" class="filter-control" placeholder="Departure City...">
+            </div>
+            <div class="filter-group">
+                <label>To (Destination)</label>
+                <input type="text" name="dest" class="filter-control" placeholder="Arrival City...">
+            </div>
+
+            <!-- ROW 2: Enterprise and Class -->
+            <div class="filter-group">
+                <label>Airline (Enterprise)</label>
+                <select name="airline" class="filter-control">
+                    <option value="">All Airlines</option>
+                    <option th:each="a : ${airlines}" th:value="${a.airName}" th:text="${a.airName}"></option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Flight Class</label>
+                <select name="className" class="filter-control">
+                    <option value="">All Classes</option>
+                    <option value="ECONOMY">Economy</option>
+                    <option value="BUSINESS">Business</option>
+                    <option value="FIRST_CLASS">First Class</option>
+                    <option value="PREMIUM_ECONOMY">Premium Economy </option>
+                </select>
+            </div>
+
+            <!-- ROW 3: Buttons -->
+            <div class="filter-row-full">
+                <a th:href="@{/api/list}" class="btn-filter-reset">
+                    <i class="fa-solid fa-rotate-left me-1"></i> Reset
+                </a>
+                <button type="submit" class="btn-filter-submit">
+                    <i class="fa-solid fa-magnifying-glass me-1"></i> Search Flights
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="header-flex">
+        <h2><i class="fa-solid fa-plane-departure me-2"></i> ✈Flights Schedule</h2>
+        <div>
+            <a th:href="@{/api/showAirline}" class="btn-add me-2"><i class="fa-solid fa-plus me-1"></i>Show Airlines</a>
+            <a th:href="@{/api/addAir}" class="btn-add me-2"><i class="fa-solid fa-plus me-1"></i> Add Airline</a>
+            <a th:href="@{/api/add}" class="btn-add"><i class="fa-solid fa-plane me-1"></i> Add Flight</a>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Plane</th>
+                    <th>Route (From - To)</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Seats (Avail/Tot)</th>
+                    <th>Class</th>
+                    <th>Price</th>
+                    <th>Book</th>
+                    <th th:if="${loggedUserName == 'admin'}">Delete</th>
+                    <th th:if="${loggedUserName == 'admin'}">Update </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterating through the list of flights -->
+                <tr th:each="f : ${flights}">
+                    <td th:text="${f.flightId}">1</td>
+                    <td th:text="${f.airline != null ? f.airline.airName : 'N/A'}" class="fw-bold">Airline</td>
+                   
+                    <td>
+                        <span th:text="${f.source}">Source</span> 
+                        <i class="fa-solid fa-arrow-right mx-2 text-muted" style="font-size: 0.8rem;"></i> 
+                        <span th:text="${f.destination}">Dest</span>
+                    </td>
+                    <td>
+                        <div class="time-text" th:text="${f.departureTime}">10:00 AM</div>
+                        <small class="text-muted" th:text="${#temporals.format(f.departureDate, 'dd MMM yyyy')}">24 Jan 2026</small>
+                    </td>
+                    <td>
+                        <div class="time-text" th:text="${f.arrivalTime}">12:00 PM</div>
+                        <small class="text-muted" th:text="${#temporals.format(f.arrivalDate, 'dd MMM yyyy')}">24 Jan 2026</small>
+                    </td>
+                    <td>
+                        <span th:text="${f.availSeat}" class="text-success fw-bold">45</span> / 
+                        <span th:text="${f.totSeat}">120</span>
+                    </td>
+                    <td><span class="badge-class" th:text="${f.className.className}">Economy</span></td>
+                    <td class="price-text">₹<span th:text="${#numbers.formatDecimal(f.flightPrice, 1, 'COMMA', 2, 'POINT')}">1200.00</span></td>
+                    <td>
+                      <a th:href="@{/api/book/{id}(id=${f.flightId})}" class="btn-add me-2">Book</a>  
+                    </td>
+                    <td>
+                        <a th:if="${loggedUserName == 'admin'}" th:href="@{/api/delete/{id} (id=${f.flightId})}" class="btn-add me-2">Delete</a>        
+                    </td>
+                    <td>
+                        <a th:if="${loggedUserName == 'admin'}" th:href="@{/api/update/{id} (id=${f.flightId})}" class="btn-add me-2">Update</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Empty state -->
+    <div th:if="${#lists.isEmpty(flights)}" class="text-center p-5">
+        <i class="fa-solid fa-plane-slash mb-3 text-muted" style="font-size: 3rem;"></i>
+        <p class="text-muted">No flights found in the schedule.</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- Defines the XML version and character encoding -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion> <!-- Specifies the version of the POM model being used -->
+	
+	<parent> <!-- Inherits default settings, versions, and configurations from Spring Boot -->
+		<groupId>org.springframework.boot</groupId> <!-- Group ID for the parent project -->
+		<artifactId>spring-boot-starter-parent</artifactId> <!-- Artifact ID for the parent starter -->
+		<version>4.1.0-M1</version> <!-- Specific version of Spring Boot being used -->
+		<relativePath /> <!-- Searches for the parent POM in the local/remote repository -->
+	</parent>
+
+	<groupId>com.example</groupId> <!-- Unique identifier for your project's organization -->
+	<artifactId>demofrgxd</artifactId> <!-- Unique name for this specific project artifact -->
+	<version>0.0.1-SNAPSHOT</version> <!-- Current development version of the project -->
+	<packaging>jar</packaging> <!-- Specifies that the output will be a Java Archive (JAR) file -->
+	<name>demo</name> <!-- Display name of the project -->
+	<description>Demo project for Spring Boot</description> <!-- Brief summary of the project's purpose -->
+	
+	<url /> <!-- Optional project URL placeholder -->
+	<licenses> <!-- Section for project licensing information -->
+		<license />
+	</licenses>
+	<developers> <!-- Section for project developer details -->
+		<developer />
+	</developers>
+	<scm> <!-- Software Configuration Management (source control) details -->
+		<connection />
+		<developerConnection />
+		<tag />
+		<url />
+	</scm>
+
+	<properties> <!-- Custom variables for the project -->
+		<java.version>17</java.version> <!-- Sets the Java version required for the project -->
+	</properties>
+
+	<dependencies> <!-- List of all external libraries required by the project -->
+		
+		<!-- Starter for using Thymeleaf template engine for HTML views -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<!-- MySQL database driver, loaded only at runtime -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Starter for building SOAP-based web services -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webservices</artifactId>
+		</dependency>
+
+		<!-- Enables automatic restarts and live reload during development -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Testing library specific to Thymeleaf views -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Testing library for SOAP web services -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webservices-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Starter for using Spring Data JPA with Hibernate for database operations -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- Starter for implementing authentication and authorization (Security) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- Essential for web applications: provides MVC, REST, and embedded Tomcat -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- Core JUnit 5 library for writing and running unit tests -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build> <!-- Configuration for the build process -->
+		<plugins> <!-- List of plugins used during building/packaging -->
+
+			<!-- Plugin to package the project as an executable JAR/WAR -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<!-- Plugin for Java Code Coverage (generates reports on test coverage) -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version> <!-- Version used for current 2026 standards -->
+				<executions>
+					<execution> <!-- Attaches the agent to the JVM during tests -->
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution> <!-- Generates the visual HTML report after tests complete -->
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,137 @@
+<!DOCTYPE html> <!-- Defines this document as HTML5 -->
+<html xmlns:th="http://www.thymeleaf.org"> <!-- Declares the Thymeleaf namespace for dynamic content -->
+<head>
+    <meta charset="UTF-8"> <!-- Sets character encoding to UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensures responsive scaling on mobile devices -->
+    <title>Add Airline | Emerald Edition 2026</title> <!-- Sets the browser tab title -->
+    
+    <!-- Link to Bootstrap 5.3 CSS for layout and styling -->
+    <link href="https://cdn.jsdelivr.net" rel="stylesheet">
+    <!-- Link to Google Fonts for the 'Inter' typeface -->
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
+    <style>
+        body {
+            /* Sets a modern system font stack */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+            /* Creates a diagonal orange gradient background */
+            background: linear-gradient(135deg, #ffa733 0%, #ff7b00 100%);
+            min-height: 100vh; /* Ensures background covers full screen height */
+            margin: 0; /* Removes default browser margins */
+            display: flex; /* Enables Flexbox for centering */
+            justify-content: center; /* Centers content horizontally */
+            align-items: center; /* Centers content vertically */
+            -webkit-font-smoothing: antialiased; /* Improves font clarity on Mac/iOS */
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.98); /* White background with slight transparency */
+            padding: 50px 70px; /* Internal spacing within the card */
+            border-radius: 18px; /* Rounded corners for the card */
+            box-shadow: 0 15px 45px rgba(0,0,0,0.3); /* Adds a deep shadow for depth */
+            width: 95%; /* Responsive width */
+            max-width: 800px; /* Prevents the card from getting too wide */
+        }
+
+        h2 { 
+            font-weight: 700; /* Bold heading */
+            color: #ff8c00; /* Orange text color */
+            margin-bottom: 30px; /* Space below the title */
+            letter-spacing: -0.5px; /* Tighter letter spacing */
+        }
+
+        label { 
+            font-weight: 600; /* Semi-bold label text */
+            font-size: 0.85rem; /* Slightly smaller text size */
+            color: #555; /* Dark grey color */
+            margin-bottom: 8px; /* Space between label and input */
+            display: block; /* Ensures label sits above input */
+        }
+
+        .flex-row-custom {
+            display: flex; /* Aligns input and button side-by-side */
+            gap: 20px; /* Space between flex items */
+            align-items: flex-end; /* Aligns button to the bottom of the input row */
+            width: 100%; /* Spans full width of container */
+        }
+
+        .flex-item-input {
+            flex: 1; /* Allows input container to grow and fill space */
+            margin-right: 39px; /* Extra margin on the right */
+        }
+
+        .form-control {
+            border-radius: 8px; /* Rounded input corners */
+            border: 1px solid #ced4da; /* Subtle border color */
+            padding: 12px 16px; /* Padding inside the input */
+            background-color: #ffffff; /* White background */
+            width: 100%; /* Fills parent container */
+            transition: all 0.2s ease; /* Smooth transition for focus effects */
+        }
+
+        .form-control:focus {
+            border-color: #ff8c00; /* Orange border on click */
+            box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.2); /* Orange glow effect */
+            outline: none; /* Removes default browser outline */
+        }
+
+        .btn-submit {
+            background-color: #ff8c00; /* Orange background */
+            color: white; /* White text */
+            border: none; /* Removes default border */
+            padding: 12px 40px; /* Internal button spacing */
+            border-radius: 8px; /* Matches input rounding */
+            font-weight: 700; /* Bold button text */
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3); /* Shadow for button pop */
+            transition: 0.3s; /* Smooth hover transition */
+            height: 50px; /* Fixed height to match input field */
+        }
+
+        .btn-submit:hover {
+             background-color: #ffa733; /* Lighter orange on hover */
+             transform: translateY(-2px); /* Subtle lift effect on hover */
+        }
+
+        .link-orange {
+            color: #ff8c00; /* Orange link color */
+            text-decoration: none; /* Removes underline */
+            font-size: 0.9rem; /* Slightly smaller text */
+            font-weight: 600; /* Semi-bold */
+        }
+        .link-orange:hover {
+            color: #ffa733; /* Color change on hover */
+            text-decoration: underline; /* Adds underline on hover */
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h2>Add New Airline</h2>
+    
+    <!-- Form sending a POST request to the Airline Controller, binding to the 'air' object -->
+    <form th:action="@{/api/addAir}" th:object="${air}" method="POST">
+        
+        <div class="flex-row-custom">
+            <!-- Container for the Airline Name input field -->
+            <div class="flex-item-input">
+                <label>Airline Name</label>
+                
+                <input type="text" th:field="*{AirName}" class="form-control" placeholder="e.g. Emirates" required>
+            </div>
+
+            <!-- Submit button triggers the POST request -->
+            <button type="submit" class="btn btn-submit shadow-sm">Add Airline</button>
+        </div>
+        
+        <!-- Navigation link to return to the main list -->
+        <div style="margin-top: 20px;">
+            <a th:href="@{/api/list}" class="link-orange">
+                ← Back to Flight List
+            </a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
